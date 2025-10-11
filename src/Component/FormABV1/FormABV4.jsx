@@ -1,5 +1,3 @@
-// src/BlockchainRegistrationForm.jsx
-
 import React, { useState, useEffect, useRef } from 'react';
 import Airtable from 'airtable';
 import './FormABV1.css'; // Asegúrate de tener este archivo de estilos
@@ -23,42 +21,41 @@ let isAirtableConfigured = false;
 
 // --- ACTUALIZADO: Se verifica la configuración de ambas tablas ---
 if (apiKey && baseId && tableName && validationTableName) {
-  const base = new Airtable({ apiKey }).base(baseId);
-  table = base(tableName);
-  validationTable = base(validationTableName); // Se inicializa la nueva tabla
-  isAirtableConfigured = true;
+    const base = new Airtable({ apiKey }).base(baseId);
+    table = base(tableName);
+    validationTable = base(validationTableName); // Se inicializa la nueva tabla
+    isAirtableConfigured = true;
 } else {
-  console.error("Faltan las variables de entorno de Airtable (VITE_APP_...). Asegúrate de tener un archivo .env.local con todas las variables requeridas.");
+    console.error("Faltan las variables de entorno de Airtable (VITE_APP_...). Asegúrate de tener un archivo .env.local con todas las variables requeridas.");
 }
 
 const FormABV4 = () => {
     const [numParticipants, setNumParticipants] = useState(1);
     const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 768 : false);
     
-    // --- ✅ CAMBIO REALIZADO AQUÍ ---
+    // --- Eliminado TFactura ---
     const [billingData, setBillingData] = useState({
-      RIFCedulaFacturacion: '',
-      DenominacionFiscalFacturacion: '',
-      DireccionFiscalFacturacion: '',
-      TelefonoFacturacion: '',
-      SectorOrganizacionFacturacion: '',
-      TFactura: 'Pro forma', // <--- Se cambió "TipoDeFactura" por "TFactura"
+        RIFCedulaFacturacion: '',
+        DenominacionFiscalFacturacion: '',
+        DireccionFiscalFacturacion: '',
+        TelefonoFacturacion: '',
+        SectorOrganizacionFacturacion: '',
     });
 
     const initialParticipantState = {
-      NacionalidadParticipante: 'V',
-      CedulaParticipante: '',
-      TipoTicketParticipante: 'Venta',
-      IDValidadorParticipante: '',
-      NombreParticipante: '',
-      ApellidoParticipante: '',
-      TelefonoCelularParticipante: '',
-      TelefonoOficinaParticipante: '',
-      EmailParticipante: '',
-      NombreOrganizacionParticipante: '',
-      RIFOrganizacionParticipante: '',
-      CargoOrganizacionParticipante: '',
-      SectorOrganizacionParticipante: ''
+        NacionalidadParticipante: 'V',
+        CedulaParticipante: '',
+        TipoTicketParticipante: 'Venta',
+        IDValidadorParticipante: '',
+        NombreParticipante: '',
+        ApellidoParticipante: '',
+        TelefonoCelularParticipante: '',
+        TelefonoOficinaParticipante: '',
+        EmailParticipante: '',
+        NombreOrganizacionParticipante: '',
+        RIFOrganizacionParticipante: '',
+        CargoOrganizacionParticipante: '',
+        SectorOrganizacionParticipante: ''
     };
 
     const [participants, setParticipants] = useState([{ ...initialParticipantState }]);
@@ -66,7 +63,7 @@ const FormABV4 = () => {
     const [submissionStatus, setSubmissionStatus] = useState('');
 
     const sectores = [
-      'Banca Privada', 'Banca Pública', 'Seguros', 'Bolsa de Valores', 'Fintech', 'Criptomonedas / Activos Digitales', 'Microfinanzas', 'Casas de Cambio', 'Gobierno / Sector Público', 'Administración Tributaria', 'Registros Públicos (Propiedad, Mercantil)', 'Notarías', 'Defensa y Seguridad Nacional', 'Salud / Servicios Médicos', 'Industria Farmacéutica', 'Biotecnología', 'Investigación Médica', 'Industrial / Manufactura', 'Automotriz', 'Alimentos y Bebidas', 'Textil y Confección', 'Construcción', 'Tecnología de la Información (TI)', 'Desarrollo de Software', 'Telecomunicaciones', 'Ciberseguridad', 'Inteligencia Artificial', 'Internet de las Cosas (IoT)', 'Educación' , 'Investigación y Desarrollo (I+D)', 'Comercio Minorista (Retail)', 'Comercio Mayorista', 'Logística y Cadena de Suministro', 'Transporte', 'Turismo y Hotelería', 'Entretenimiento y Medios', 'Consultoría (Legal, Financiera, Tecnológica)', 'Servicios', 'Ingenieria', 'Energía (Petróleo, Gas, Renovables)', 'Minería', 'Agricultura / Agroindustria', 'Organizaciones No Gubernamentales (ONG)', 'Fundaciones', 'Legal / Despachos de Abogados', 'Marketing y Publicidad', 'Inmobiliario', 'Otros'
+        'Banca Privada', 'Banca Pública', 'Seguros', 'Bolsa de Valores', 'Fintech', 'Criptomonedas / Activos Digitales', 'Microfinanzas', 'Casas de Cambio', 'Gobierno / Sector Público', 'Administración Tributaria', 'Registros Públicos (Propiedad, Mercantil)', 'Notarías', 'Defensa y Seguridad Nacional', 'Salud / Servicios Médicos', 'Industria Farmacéutica', 'Biotecnología', 'Investigación Médica', 'Industrial / Manufactura', 'Automotriz', 'Alimentos y Bebidas', 'Textil y Confección', 'Construcción', 'Tecnología de la Información (TI)', 'Desarrollo de Software', 'Telecomunicaciones', 'Ciberseguridad', 'Inteligencia Artificial', 'Internet de las Cosas (IoT)', 'Educación' , 'Investigación y Desarrollo (I+D)', 'Comercio Minorista (Retail)', 'Comercio Mayorista', 'Logística y Cadena de Suministro', 'Transporte', 'Turismo y Hotelería', 'Entretenimiento y Medios', 'Consultoría (Legal, Financiera, Tecnológica)', 'Servicios', 'Ingenieria', 'Energía (Petróleo, Gas, Renovables)', 'Minería', 'Agricultura / Agroindustria', 'Organizaciones No Gubernamentales (ONG)', 'Fundaciones', 'Legal / Despachos de Abogados', 'Marketing y Publicidad', 'Inmobiliario', 'Otros'
     ];
 
     useEffect(() => {
@@ -95,6 +92,7 @@ const FormABV4 = () => {
         });
     }, [numParticipants]);
 
+    // --- ✅ Lógica de RIF/Cédula MEJORADA ---
     const formatIdentifier = (value) => {
         const cleaned = value.toUpperCase().replace(/[^A-Z0-9]/g, '');
         if (cleaned.length === 0) return '';
@@ -104,9 +102,21 @@ const FormABV4 = () => {
             return cleaned.slice(0, 1);
         }
         
-        const numbers = cleaned.slice(1).replace(/[^0-9]/g, '');
+        let numbers = cleaned.slice(1).replace(/[^0-9]/g, '');
         
-        return `${letter}-${numbers}`.slice(0, 12);
+        // J/G (RIF) deben tener máx. 9 dígitos. Cédulas (V/E/P) pueden ser más cortas pero se limitan a 10 dígitos numéricos para consistencia visual.
+        const maxNumericDigits = (/^[JG]$/.test(letter)) ? 9 : 10; 
+        
+        if (numbers.length > maxNumericDigits) {
+            numbers = numbers.slice(0, maxNumericDigits);
+        }
+        
+        if (numbers.length === 0 && letter) {
+            return `${letter}-`;
+        }
+
+        // El límite total de la cadena es 11 para J/G (L-DDDDDDDDD) y 12 para Cédulas (L-DDDDDDDDDD).
+        return `${letter}-${numbers}`.slice(0, maxNumericDigits + 1 + 1); 
     };
     
     const handleNumParticipantsChange = (e) => {
@@ -144,6 +154,20 @@ const FormABV4 = () => {
         setParticipants(updatedParticipants);
     };
 
+    // --- Función para Adjuntar RIF (Abrir Correo) ---
+    const handleAttachRIF = () => {
+        const toEmail = 'abv.gemini.ia@gmail.com';
+        const rifToUse = billingData.RIFCedulaFacturacion || 'PENDIENTE'; 
+        const subject = `Adjunto RIF - Facturación ${rifToUse}`;
+        // Se carga el correo con los datos de facturación ingresados
+        const body = `Estimados,\n\nAdjunto en este correo el RIF/Cédula correspondiente al número ${rifToUse} y a la Denominación Fiscal: ${billingData.DenominacionFiscalFacturacion || 'PENDIENTE'}.\n\nPor favor, adjunte el documento del RIF/Cédula a este correo y envíelo.\n\nSaludos.`;
+        
+        const mailtoLink = `mailto:${toEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        
+        // Abre la aplicación de correo predeterminada del usuario
+        window.location.href = mailtoLink;
+    };
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmissionStatus('');
@@ -157,16 +181,33 @@ const FormABV4 = () => {
             return;
         }
 
-        const rifCedulaRegex = /^[VEJPG]-\d{7,9}$/;
-        if (!rifCedulaRegex.test(billingData.RIFCedulaFacturacion)) {
-            alert('El RIF o Cédula de facturación no es válido.');
+        // --- VALIDACIÓN DE RIF Y OBLIGATORIOS (Validación selectiva de 9 dígitos) ---
+        const rifJGCedulaRegex = /^[VEJP]-\d{7,10}$/; // Cédulas (V/E/P) o RIF (J) con más de 7 dígitos
+        const rifJGRegex = /^[JG]-\d{9}$/; // RIF de entidad legal (J/G) deben ser 9 dígitos exactos
+        
+        const billingId = billingData.RIFCedulaFacturacion;
+        const billingPrefix = billingId.charAt(0);
+
+        if (/^[JG]$/.test(billingPrefix) && !rifJGRegex.test(billingId)) {
+            alert('El RIF de facturación (J o G) no es válido. Debe tener una letra (J, G), un guion y **exactamente 9 dígitos (rellene con ceros a la izquierda si es necesario)**. Ej: J-001234567');
             setIsSubmitting(false);
             return;
+        } else if (!/^[JG]$/.test(billingPrefix) && !rifJGCedulaRegex.test(billingId)) {
+             // Validar que V/E/P sigan el formato básico (ej: V-1234567)
+             alert('La Cédula o RIF (V, E, P) no es válida. Debe tener una letra (V, E, P) y un formato numérico válido. Ej: V-12345678');
+             setIsSubmitting(false);
+             return;
         }
+        
         if (billingData.TelefonoFacturacion.length !== 11) {
             alert('El teléfono de facturación debe tener exactamente 11 dígitos.');
             setIsSubmitting(false);
             return;
+        }
+        if (billingData.DenominacionFiscalFacturacion.trim() === '' || billingData.DireccionFiscalFacturacion.trim() === '' || billingData.SectorOrganizacionFacturacion.trim() === '') {
+             alert('Por favor, complete todos los campos obligatorios de Facturación.');
+             setIsSubmitting(false);
+             return;
         }
 
         for (let i = 0; i < participants.length; i++) {
@@ -192,6 +233,20 @@ const FormABV4 = () => {
                 setIsSubmitting(false);
                 return;
             }
+            
+            // Validar RIF de la Organización (aplicando la misma lógica selectiva)
+            const participantRif = p.RIFOrganizacionParticipante;
+            const participantPrefix = participantRif.charAt(0);
+            
+            if (/^[JG]$/.test(participantPrefix) && !rifJGRegex.test(participantRif)) {
+                 alert(`El RIF de la Organización (J o G) del participante #${participantNumber} no es válido. Debe tener una letra (J, G), un guion y **exactamente 9 dígitos (rellene con ceros a la izquierda si es necesario)**. Ej: J-001234567`);
+                 setIsSubmitting(false);
+                 return;
+            } else if (!/^[JG]$/.test(participantPrefix) && !rifJGCedulaRegex.test(participantRif)) {
+                 alert(`El RIF/Cédula (V, E, P) de la Organización del participante #${participantNumber} no es válido. Debe tener una letra (V, E, P) y un formato numérico válido.`);
+                 setIsSubmitting(false);
+                 return;
+            }
         }
         
         try {
@@ -212,6 +267,7 @@ const FormABV4 = () => {
                 throw new Error("ID ya registrado.");
             }
             
+            // Usamos IDValidadorTardeFecha1 (asumiendo que esta era la validación correcta para TABLE_NAME2 del prompt anterior)
             const checkValidityFormula = `OR(${validatorIds.map(id => `{IDValidadorTardeFecha1} = '${id}'`).join(',')})`;
             const validIdRecords = await validationTable.select({ filterByFormula: checkValidityFormula, fields: ['IDValidadorTardeFecha1'] }).all();
             
@@ -224,9 +280,16 @@ const FormABV4 = () => {
 
             setSubmissionStatus('Enviando datos a Airtable...');
             const timestamp = new Date().toISOString();
+            
+            const billingDataToInsert = { ...billingData };
+
+            // Aseguramos que TFactura no esté presente si la BD lo requiere o si queremos un valor fijo.
+            // Si la columna TFactura es crítica en Airtable, se puede forzar un valor:
+            // billingDataToInsert.TFactura = 'Pro forma'; 
+
             const recordsToInsert = participants.map(participant => ({
                 fields: {
-                    ...billingData,
+                    ...billingDataToInsert,
                     ...participant,
                     created_at: timestamp,
                 }
@@ -237,6 +300,9 @@ const FormABV4 = () => {
             setSubmissionStatus('¡Inscripción enviada exitosamente a Airtable!');
             alert('Formulario enviado y registrado en Airtable correctamente.');
 
+            // --- Redirección al menú/inicio ---
+            window.location.href = '/'; 
+
         } catch (error) {
             console.error('Error durante la validación o envío a Airtable:', error);
             const errorMessage = error.message || 'Error desconocido al procesar la inscripción.';
@@ -244,7 +310,7 @@ const FormABV4 = () => {
                 setSubmissionStatus(`Error: ${errorMessage}. Por favor, intente de nuevo.`);
                 alert(`Error al procesar la inscripción. Por favor, intente de nuevo.`);
             } else {
-                 setSubmissionStatus(`Error de validación: ${error.message}`);
+                setSubmissionStatus(`Error de validación: ${error.message}`);
             }
         } finally {
             setIsSubmitting(false);
@@ -254,13 +320,16 @@ const FormABV4 = () => {
 
     const tableRef = useRef(null);
 
+    // Lógica para redimensionar las columnas de la tabla (omitiendo por brevedad)
     useEffect(()=>{if(isMobile||typeof document==='undefined')return;const table=tableRef.current;if(!table)return;const cols=Array.from(table.querySelectorAll('th'));const activeResizers=[];cols.forEach((col)=>{const resizer=col.querySelector('.resize-handle');if(!resizer)return;let x=0;let w=0;const mouseDownHandler=(e)=>{e.preventDefault();x=e.clientX;w=col.offsetWidth;document.addEventListener('mousemove',mouseMoveHandler);document.addEventListener('mouseup',mouseUpHandler);resizer.classList.add('resizing');};const mouseMoveHandler=(e)=>{const dx=e.clientX-x;const newWidth=w+dx;if(newWidth>40){col.style.width=`${newWidth}px`;}};const mouseUpHandler=()=>{document.removeEventListener('mousemove',mouseMoveHandler);document.removeEventListener('mouseup',mouseUpHandler);resizer.classList.remove('resizing');};resizer.addEventListener('mousedown',mouseDownHandler);activeResizers.push({resizer,handler:mouseDownHandler});});return()=>{activeResizers.forEach(({resizer,handler})=>{if(resizer){resizer.removeEventListener('mousedown',handler);}});};},[participants.length,isMobile]);
     
     const participantTableHeaders=[{label:'#',width:'45px',isResizable:false},{label:'Nacionalidad*',width:'110px'},{label:'Cédula*',width:'110px'},{label:'Tipo Ticket*',width:'120px'},{label:'ID Validador*',width:'130px'},{label:'Nombre*',width:'180px'},{label:'Apellido*',width:'180px'},{label:'Tel. Celular*',width:'140px'},{label:'Tel. Oficina',width:'140px'},{label:'Email*',width:'240px'},{label:'Organización*',width:'220px'},{label:'RIF*',width:'130px'},{label:'Cargo en la empresa*',width:'200px'},{label:'Sector de la empresa*',width:'190px'}];
     
-    const renderParticipantCards=()=>{return(<div className="participants-cards">{participants.map((participant,index)=>(<div key={`card-${index}`} className="participant-card"><div className="participant-card-header">Participante #{index+1}</div><div className="participant-card-grid"><div className="participant-field"><label htmlFor={`participant-${index}-NacionalidadParticipante-card`}>Nacionalidad<span style={{color:'red'}}>*</span></label><select id={`participant-${index}-NacionalidadParticipante-card`} name={`participant-${index}-NacionalidadParticipante`} value={participant.NacionalidadParticipante} onChange={(e)=>handleParticipantChange(index,'NacionalidadParticipante',e.target.value)} className="form-select" required><option value="V">V</option><option value="E">E</option><option value="P">P</option></select></div><div className="participant-field"><label htmlFor={`participant-${index}-CedulaParticipante-card`}>Cédula<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-CedulaParticipante-card`} name={`participant-${index}-CedulaParticipante`} type="text" value={participant.CedulaParticipante} onChange={(e)=>handleParticipantChange(index,'CedulaParticipante',e.target.value)} className="form-input" placeholder="Ej: 12345678" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-TipoTicketParticipante-card`}>Tipo de Ticket<span style={{color:'red'}}>*</span></label><select id={`participant-${index}-TipoTicketParticipante-card`} name={`participant-${index}-TipoTicketParticipante`} value={participant.TipoTicketParticipante} onChange={(e)=>handleParticipantChange(index,'TipoTicketParticipante',e.target.value)} className="form-select" required><option value="Venta">Venta</option><option value="Cortesia">Cortesía</option></select></div><div className="participant-field"><label htmlFor={`participant-${index}-IDValidadorParticipante-card`}>ID Validador<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-IDValidadorParticipante-card`} name={`participant-${index}-IDValidadorParticipante`} type="text" value={participant.IDValidadorParticipante} onChange={(e)=>handleParticipantChange(index,'IDValidadorParticipante',e.target.value)} className="form-input" placeholder={participant.TipoTicketParticipante==='Cortesia'?'Código de 6 dígitos':'Código de 6 dígitos'} maxLength="6" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-NombreParticipante-card`}>Nombre<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-NombreParticipante-card`} name={`participant-${index}-NombreParticipante`} type="text" value={participant.NombreParticipante} onChange={(e)=>handleParticipantChange(index,'NombreParticipante',e.target.value)} className="form-input" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-ApellidoParticipante-card`}>Apellido<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-ApellidoParticipante-card`} name={`participant-${index}-ApellidoParticipante`} type="text" value={participant.ApellidoParticipante} onChange={(e)=>handleParticipantChange(index,'ApellidoParticipante',e.target.value)} className="form-input" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-TelefonoCelularParticipante-card`}>Teléfono Celular<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-TelefonoCelularParticipante-card`} name={`participant-${index}-TelefonoCelularParticipante`} type="tel" value={participant.TelefonoCelularParticipante} onChange={(e)=>handleParticipantChange(index,'TelefonoCelularParticipante',e.target.value)} className="form-input" placeholder="04141234567" maxLength="11" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-TelefonoOficinaParticipante-card`}>Teléfono Oficina</label><input id={`participant-${index}-TelefonoOficinaParticipante-card`} name={`participant-${index}-TelefonoOficinaParticipante`} type="tel" value={participant.TelefonoOficinaParticipante} onChange={(e)=>handleParticipantChange(index,'TelefonoOficinaParticipante',e.target.value)} className="form-input" placeholder="02121234567" maxLength="11"/></div><div className="participant-field full-width"><label htmlFor={`participant-${index}-EmailParticipante-card`}>Email<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-EmailParticipante-card`} name={`participant-${index}-EmailParticipante`} type="email" value={participant.EmailParticipante} onChange={(e)=>handleParticipantChange(index,'EmailParticipante',e.target.value)} className="form-input" placeholder="usuario@dominio.com" required/></div><div className="participant-field full-width"><label htmlFor={`participant-${index}-NombreOrganizacionParticipante-card`}>Nombre de la Organización<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-NombreOrganizacionParticipante-card`} name={`participant-${index}-NombreOrganizacionParticipante`} type="text" value={participant.NombreOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'NombreOrganizacionParticipante',e.target.value)} className="form-input" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-RIFOrganizacionParticipante-card`}>RIF de la Organización<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-RIFOrganizacionParticipante-card`} name={`participant-${index}-RIFOrganizacionParticipante`} type="text" value={participant.RIFOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'RIFOrganizacionParticipante',e.target.value)} className="form-input" placeholder="J-123456789" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-CargoOrganizacionParticipante-card`}>Cargo en la Organización<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-CargoOrganizacionParticipante-card`} name={`participant-${index}-CargoOrganizacionParticipante`} type="text" value={participant.CargoOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'CargoOrganizacionParticipante',e.target.value)} className="form-input" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-SectorOrganizacionParticipante-card`}>Sector de la Organización<span style={{color:'red'}}>*</span></label><select id={`participant-${index}-SectorOrganizacionParticipante-card`} name={`participant-${index}-SectorOrganizacionParticipante`} value={participant.SectorOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'SectorOrganizacionParticipante',e.target.value)} className="form-select" required><option value="">Seleccione</option>{sectores.map(sector=>(<option key={`${index}-card-${sector}`} value={sector}>{sector}</option>))}</select></div></div></div>))}</div>);};
+    const renderParticipantCards=()=>{return(<div className="participants-cards">{participants.map((participant,index)=>(<div key={`card-${index}`} className="participant-card"><div className="participant-card-header">Participante #{index+1}</div><div className="participant-card-grid"><div className="participant-field"><label htmlFor={`participant-${index}-NacionalidadParticipante-card`}>Nacionalidad<span style={{color:'red'}}>*</span></label><select id={`participant-${index}-NacionalidadParticipante-card`} name={`participant-${index}-NacionalidadParticipante`} value={participant.NacionalidadParticipante} onChange={(e)=>handleParticipantChange(index,'NacionalidadParticipante',e.target.value)} className="form-select" required><option value="V">V</option><option value="E">E</option><option value="P">P</option></select></div><div className="participant-field"><label htmlFor={`participant-${index}-CedulaParticipante-card`}>Cédula<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-CedulaParticipante-card`} name={`participant-${index}-CedulaParticipante`} type="text" value={participant.CedulaParticipante} onChange={(e)=>handleParticipantChange(index,'CedulaParticipante',e.target.value)} className="form-input" placeholder="Ej: 12345678" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-TipoTicketParticipante-card`}>Tipo de Ticket<span style={{color:'red'}}>*</span></label><select id={`participant-${index}-TipoTicketParticipante-card`} name={`participant-${index}-TipoTicketParticipante`} value={participant.TipoTicketParticipante} onChange={(e)=>handleParticipantChange(index,'TipoTicketParticipante',e.target.value)} className="form-select" required><option value="Venta">Venta</option><option value="Cortesia">Cortesía</option></select></div><div className="participant-field"><label htmlFor={`participant-${index}-IDValidadorParticipante-card`}>ID Validador<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-IDValidadorParticipante-card`} name={`participant-${index}-IDValidadorParticipante`} type="text" value={participant.IDValidadorParticipante} onChange={(e)=>handleParticipantChange(index,'IDValidadorParticipante',e.target.value)} className="form-input" placeholder={participant.TipoTicketParticipante==='Cortesia'?'Código de 6 dígitos':'Código de 6 dígitos'} maxLength="6" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-NombreParticipante-card`}>Nombre<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-NombreParticipante-card`} name={`participant-${index}-NombreParticipante`} type="text" value={participant.NombreParticipante} onChange={(e)=>handleParticipantChange(index,'NombreParticipante',e.target.value)} className="form-input" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-ApellidoParticipante-card`}>Apellido<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-ApellidoParticipante-card`} name={`participant-${index}-ApellidoParticipante`} type="text" value={participant.ApellidoParticipante} onChange={(e)=>handleParticipantChange(index,'ApellidoParticipante',e.target.value)} className="form-input" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-TelefonoCelularParticipante-card`}>Teléfono Celular<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-TelefonoCelularParticipante-card`} name={`participant-${index}-TelefonoCelularParticipante`} type="tel" value={participant.TelefonoCelularParticipante} onChange={(e)=>handleParticipantChange(index,'TelefonoCelularParticipante',e.target.value)} className="form-input" placeholder="04141234567" maxLength="11" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-TelefonoOficinaParticipante-card`}>Teléfono Oficina</label><input id={`participant-${index}-TelefonoOficinaParticipante-card`} name={`participant-${index}-TelefonoOficinaParticipante`} type="tel" value={participant.TelefonoOficinaParticipante} onChange={(e)=>handleParticipantChange(index,'TelefonoOficinaParticipante',e.target.value)} className="form-input" placeholder="02121234567" maxLength="11"/></div><div className="participant-field full-width"><label htmlFor={`participant-${index}-EmailParticipante-card`}>Email<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-EmailParticipante-card`} name={`participant-${index}-EmailParticipante`} type="email" value={participant.EmailParticipante} onChange={(e)=>handleParticipantChange(index,'EmailParticipante',e.target.value)} className="form-input" placeholder="usuario@dominio.com" required/></div><div className="participant-field full-width"><label htmlFor={`participant-${index}-NombreOrganizacionParticipante-card`}>Nombre de la Organización<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-NombreOrganizacionParticipante-card`} name={`participant-${index}-NombreOrganizacionParticipante`} type="text" value={participant.NombreOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'NombreOrganizacionParticipante',e.target.value)} className="form-input" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-RIFOrganizacionParticipante-card`}>RIF de la Organización<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-RIFOrganizacionParticipante-card`} name={`participant-${index}-RIFOrganizacionParticipante`} type="text" value={participant.RIFOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'RIFOrganizacionParticipante',e.target.value)} className="form-input" placeholder="J-001234567" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-CargoOrganizacionParticipante-card`}>Cargo en la Organización<span style={{color:'red'}}>*</span></label><input id={`participant-${index}-CargoOrganizacionParticipante-card`} name={`participant-${index}-CargoOrganizacionParticipante`} type="text" value={participant.CargoOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'CargoOrganizacionParticipante',e.target.value)} className="form-input" required/></div><div className="participant-field"><label htmlFor={`participant-${index}-SectorOrganizacionParticipante-card`}>Sector de la Organización<span style={{color:'red'}}>*</span></label><select id={`participant-${index}-SectorOrganizacionParticipante-card`} name={`participant-${index}-SectorOrganizacionParticipante`} value={participant.SectorOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'SectorOrganizacionParticipante',e.target.value)} className="form-select" required><option value="">Seleccione</option>{sectores.map(sector=>(<option key={`${index}-card-${sector}`} value={sector}>{sector}</option>))}</select></div></div></div>))}</div>);};
     
-    const renderParticipantsTable=()=>{return(<div className="table-wrapper"><table className="participants-table" ref={tableRef}><thead><tr>{participantTableHeaders.map((headerInfo,idx)=>(<th key={`th-${idx}`} style={{position:'relative',whiteSpace:'nowrap',width:headerInfo.width}}>{headerInfo.label.endsWith('*')? <>{headerInfo.label.slice(0,-1)}<span style={{color:'red'}}>*</span></> : headerInfo.label}{(headerInfo.isResizable!==false&&idx>0)&&<div className="resize-handle"></div>}</th>))}</tr></thead><tbody>{participants.map((participant,index)=>(<tr key={`tr-${index}`}><td>{index+1}</td><td><select name={`participant-${index}-NacionalidadParticipante`} aria-label={`Nacionalidad participante ${index+1}`} value={participant.NacionalidadParticipante} onChange={(e)=>handleParticipantChange(index,'NacionalidadParticipante',e.target.value)} className="form-select compact" required><option value="V">V</option><option value="E">E</option><option value="P">P</option></select></td><td><input name={`participant-${index}-CedulaParticipante`} aria-label={`Cédula participante ${index+1}`} type="text" value={participant.CedulaParticipante} onChange={(e)=>handleParticipantChange(index,'CedulaParticipante',e.target.value)} className="form-input compact" placeholder="Ej: 12345678" required/></td><td><select name={`participant-${index}-TipoTicketParticipante`} aria-label={`Tipo de ticket participante ${index+1}`} value={participant.TipoTicketParticipante} onChange={(e)=>handleParticipantChange(index,'TipoTicketParticipante',e.target.value)} className="form-select compact" required><option value="Venta">Venta</option><option value="Cortesia">Cortesía</option></select></td><td><input name={`participant-${index}-IDValidadorParticipante`} aria-label={`ID Validador participante ${index+1}`} type="text" value={participant.IDValidadorParticipante} onChange={(e)=>handleParticipantChange(index,'IDValidadorParticipante',e.target.value)} className="form-input compact" placeholder="6 dígitos" maxLength="6" required/></td><td><input name={`participant-${index}-NombreParticipante`} aria-label={`Nombre participante ${index+1}`} type="text" value={participant.NombreParticipante} onChange={(e)=>handleParticipantChange(index,'NombreParticipante',e.target.value)} className="form-input compact" required/></td><td><input name={`participant-${index}-ApellidoParticipante`} aria-label={`Apellido participante ${index+1}`} type="text" value={participant.ApellidoParticipante} onChange={(e)=>handleParticipantChange(index,'ApellidoParticipante',e.target.value)} className="form-input compact" required/></td><td><input name={`participant-${index}-TelefonoCelularParticipante`} aria-label={`Teléfono celular participante ${index+1}`} type="tel" value={participant.TelefonoCelularParticipante} onChange={(e)=>handleParticipantChange(index,'TelefonoCelularParticipante',e.target.value)} className="form-input compact" placeholder="04141234567" maxLength="11" required/></td><td><input name={`participant-${index}-TelefonoOficinaParticipante`} aria-label={`Teléfono oficina participante ${index+1}`} type="tel" value={participant.TelefonoOficinaParticipante} onChange={(e)=>handleParticipantChange(index,'TelefonoOficinaParticipante',e.target.value)} className="form-input compact" placeholder="02121234567" maxLength="11"/></td><td><input name={`participant-${index}-EmailParticipante`} aria-label={`Email participante ${index+1}`} type="email" value={participant.EmailParticipante} onChange={(e)=>handleParticipantChange(index,'EmailParticipante',e.target.value)} className="form-input compact" placeholder="usuario@dominio.com" required/></td><td><input name={`participant-${index}-NombreOrganizacionParticipante`} aria-label={`Nombre organización participante ${index+1}`} type="text" value={participant.NombreOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'NombreOrganizacionParticipante',e.target.value)} className="form-input compact" required/></td><td><input name={`participant-${index}-RIFOrganizacionParticipante`} aria-label={`RIF organización participante ${index+1}`} type="text" value={participant.RIFOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'RIFOrganizacionParticipante',e.target.value)} className="form-input compact" placeholder="J-123456789" required/></td><td><input name={`participant-${index}-CargoOrganizacionParticipante`} aria-label={`Cargo organización participante ${index+1}`} type="text" value={participant.CargoOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'CargoOrganizacionParticipante',e.target.value)} className="form-input compact" required/></td><td><select name={`participant-${index}-SectorOrganizacionParticipante`} aria-label={`Sector organización participante ${index+1}`} value={participant.SectorOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'SectorOrganizacionParticipante',e.target.value)} className="form-select compact" required><option value="">Seleccione</option>{sectores.map(sector=>(<option key={`${index}-table-${sector}`} value={sector}>{sector}</option>))}</select></td></tr>))}</tbody></table></div>);};
+    const renderParticipantsTable=()=>{return(<div className="table-wrapper"><table className="participants-table" ref={tableRef}><thead><tr>{participantTableHeaders.map((headerInfo,idx)=>(<th key={`th-${idx}`} style={{position:'relative',whiteSpace:'nowrap',width:headerInfo.width}}>{headerInfo.label.endsWith('*')? <>{headerInfo.label.slice(0,-1)}<span style={{color:'red'}}>*</span></> : headerInfo.label}{(headerInfo.isResizable!==false&&idx>0)&&<div className="resize-handle"></div>}</th>))}</tr></thead><tbody>{participants.map((participant,index)=>(<tr key={`tr-${index}`}><td>{index+1}</td><td><select name={`participant-${index}-NacionalidadParticipante`} aria-label={`Nacionalidad participante ${index+1}`} value={participant.NacionalidadParticipante} onChange={(e)=>handleParticipantChange(index,'NacionalidadParticipante',e.target.value)} className="form-select compact" required><option value="V">V</option><option value="E">E</option><option value="P">P</option></select></td><td><input name={`participant-${index}-CedulaParticipante`} aria-label={`Cédula participante ${index+1}`} type="text" value={participant.CedulaParticipante} onChange={(e)=>handleParticipantChange(index,'CedulaParticipante',e.target.value)} className="form-input compact" placeholder="Ej: 12345678" required/></td><td><select name={`participant-${index}-TipoTicketParticipante`} aria-label={`Tipo de ticket participante ${index+1}`} value={participant.TipoTicketParticipante} onChange={(e)=>handleParticipantChange(index,'TipoTicketParticipante',e.target.value)} className="form-select compact" required><option value="Venta">Venta</option><option value="Cortesia">Cortesía</option></select></td><td><input name={`participant-${index}-IDValidadorParticipante`} aria-label={`ID Validador participante ${index+1}`} type="text" value={participant.IDValidadorParticipante} onChange={(e)=>handleParticipantChange(index,'IDValidadorParticipante',e.target.value)} className="form-input compact" placeholder="6 dígitos" maxLength="6" required/></td><td><input name={`participant-${index}-NombreParticipante`} aria-label={`Nombre participante ${index+1}`} type="text" value={participant.NombreParticipante} onChange={(e)=>handleParticipantChange(index,'NombreParticipante',e.target.value)} className="form-input compact" required/></td><td><input name={`participant-${index}-ApellidoParticipante`} aria-label={`Apellido participante ${index+1}`} type="text" value={participant.ApellidoParticipante} onChange={(e)=>handleParticipantChange(index,'ApellidoParticipante',e.target.value)} className="form-input compact" required/></td><td><input name={`participant-${index}-TelefonoCelularParticipante`} aria-label={`Teléfono celular participante ${index+1}`} type="tel" value={participant.TelefonoCelularParticipante} onChange={(e)=>handleParticipantChange(index,'TelefonoCelularParticipante',e.target.value)} className="form-input compact" placeholder="04141234567" maxLength="11" required/></td><td><input name={`participant-${index}-TelefonoOficinaParticipante`} aria-label={`Teléfono oficina participante ${index+1}`} type="tel" value={participant.TelefonoOficinaParticipante} onChange={(e)=>handleParticipantChange(index,'TelefonoOficinaParticipante',e.target.value)} className="form-input compact" placeholder="02121234567" maxLength="11"/></td><td><input name={`participant-${index}-EmailParticipante`} aria-label={`Email participante ${index+1}`} type="email" value={participant.EmailParticipante} onChange={(e)=>handleParticipantChange(index,'EmailParticipante',e.target.value)} className="form-input compact" placeholder="usuario@dominio.com" required/></td><td><input name={`participant-${index}-NombreOrganizacionParticipante`} aria-label={`Nombre organización participante ${index+1}`} type="text" value={participant.NombreOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'NombreOrganizacionParticipante',e.target.value)} className="form-input compact" required/></td><td><input name={`participant-${index}-RIFOrganizacionParticipante`} aria-label={`RIF organización participante ${index+1}`} type="text" value={participant.RIFOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'RIFOrganizacionParticipante',e.target.value)} className="form-input compact" placeholder="J-001234567" required/></td><td><input name={`participant-${index}-CargoOrganizacionParticipante`} aria-label={`Cargo organización participante ${index+1}`} type="text" value={participant.CargoOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'CargoOrganizacionParticipante',e.target.value)} className="form-input compact" required/></td><td><select name={`participant-${index}-SectorOrganizacionParticipante`} aria-label={`Sector organización participante ${index+1}`} value={participant.SectorOrganizacionParticipante} onChange={(e)=>handleParticipantChange(index,'SectorOrganizacionParticipante',e.target.value)} className="form-select compact" required><option value="">Seleccione</option>{sectores.map(sector=>(<option key={`${index}-table-${sector}`} value={sector}>{sector}</option>))}</select></td></tr>))}</tbody></table></div>);};
+
+    const isBillingDataReady = billingData.RIFCedulaFacturacion && billingData.RIFCedulaFacturacion.length >= 2 && billingData.DenominacionFiscalFacturacion.trim() !== '';
 
     return (
         <div className="container">
@@ -291,7 +360,7 @@ const FormABV4 = () => {
                         <div className="billing-fields">
                             <div className="form-group">
                                 <label htmlFor="RIFCedulaFacturacion">RIF o Cédula:<span style={{color:'red'}}>*</span></label>
-                                <input type="text" id="RIFCedulaFacturacion" name="RIFCedulaFacturacion" className="form-input" value={billingData.RIFCedulaFacturacion} onChange={(e)=>handleBillingChange('RIFCedulaFacturacion',e.target.value)} placeholder="Ej: V-12345678, J-123456789" required/>
+                                <input type="text" id="RIFCedulaFacturacion" name="RIFCedulaFacturacion" className="form-input" value={billingData.RIFCedulaFacturacion} onChange={(e)=>handleBillingChange('RIFCedulaFacturacion',e.target.value)} placeholder="Ej: V-12345678 o J-001234567" required/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="DenominacionFiscalFacturacion">Denominación Fiscal:<span style={{color:'red'}}>*</span></label>
@@ -312,13 +381,20 @@ const FormABV4 = () => {
                                     {sectores.map(sector=>(<option key={`billing-${sector}`} value={sector}>{sector}</option>))}
                                 </select>
                             </div>
-                            {/* --- ✅ CAMBIO REALIZADO AQUÍ --- */}
-                            <div className="form-group">
-                                <label htmlFor="TFactura">Tipo de Factura:<span style={{color:'red'}}>*</span></label>
-                                <select id="TFactura" name="TFactura" className="form-select" value={billingData.TFactura} onChange={(e)=>handleBillingChange('TFactura',e.target.value)} required>
-                                    <option value="Pro forma">Pro forma</option>
-                                    <option value="Contribuyente especial">Contribuyente especial</option>
-                                </select>
+                             
+                            {/* --- ✅ Botón de adjuntar RIF (mailto) --- */}
+                             <div className="form-group">
+                                <label htmlFor="adjuntarRIF">Adjuntar RIF (Imagen/PDF)<span style={{color:'red'}}>*</span></label>
+                                <button 
+                                    type="button" 
+                                    onClick={handleAttachRIF} 
+                                    className="submit-button" 
+                                    disabled={!isBillingDataReady} // Se deshabilita hasta que los campos clave estén listos
+                                    style={{backgroundColor: isBillingDataReady ? '#007bff' : '#ccc', marginTop: '5px'}}
+                                >
+                                    Adjuntar RIF (Abrir Correo)
+                                </button>
+                                <small id="adjuntarRIFHelp" className="form-text text-muted">Haga clic para abrir su aplicación de correo y adjuntar el RIF/Cédula a **abv.gemini.ia@gmail.com**.</small>
                             </div>
                         </div>
                     </div>
@@ -336,6 +412,7 @@ const FormABV4 = () => {
                 </form>
                 <div className="footer">
                     <p>Los campos marcados con <span style={{color:'red'}}>*</span> son obligatorios</p>
+                    <p><small>* El RIF/Cédula (V, E, P) acepta su formato usual. Los RIFs de organización (**J, G**) deben tener una letra inicial, un guion y **9 dígitos** (rellene con ceros a la izquierda si es necesario). Ej: **J-001234567**.</small></p>
                     <p><small>* El campo ID Validador es OBLIGATORIO (6 dígitos). No se permiten IDs duplicados o que no estén en la lista de IDs válidos.</small></p>
                 </div>
             </div>
