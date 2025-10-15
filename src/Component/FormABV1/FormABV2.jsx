@@ -277,25 +277,17 @@ const FormABV2 = () => {
 
     const tableRef = useRef(null);
     
-    // ... (El resto de tus funciones como renderParticipantCards, etc. no necesitan cambios)
+    // El resto de las funciones de renderizado no necesitan cambios.
     const renderParticipantCards = () => (
         <div className="participants-cards">
-            {participants.map((participant, index) => (
-                <div key={`card-${index}`} className="participant-card">
-                    {/* ... (Contenido de las tarjetas de participante) ... */}
-                </div>
-            ))}
+            {/* ... */}
         </div>
     );
-    
     const renderParticipantsTable = () => (
         <div className="table-wrapper">
-            {/* ... (Contenido de la tabla de participantes) ... */}
+            {/* ... */}
         </div>
     );
-
-    // --- SOLUCIÓN: Enlace mailto simple y robusto ---
-    const mailtoLink = "mailto:abv.gemini.ia@gmail.com";
 
     return (
         <div className="container">
@@ -347,12 +339,14 @@ const FormABV2 = () => {
                                      {sectores.map(sector => (<option key={`billing-${sector}`} value={sector}>{sector}</option>))}
                                  </select>
                              </div>
+                            
+                            {/* --- CÓDIGO CORREGIDO Y SIMPLIFICADO --- */}
                             <div className="form-group">
                                 <label>Adjuntar RIF (Imagen/PDF)<span style={{color:'red'}}>*</span></label>
                                 
                                 <a
-                                    href={mailtoLink}
-                                    className="submit-button"
+                                    href="mailto:" // Abre el cliente de correo por defecto sin destinatario
+                                    className="submit-button" // Reutiliza los estilos de tu botón
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     style={{
@@ -361,18 +355,19 @@ const FormABV2 = () => {
                                         color: 'white',
                                         textAlign: 'center',
                                         marginTop: '5px',
-                                        padding: '10px 15px', // Agrega padding para que se vea como botón
-                                        borderRadius: '5px' // Agrega bordes redondeados
+                                        padding: '10px 15px',
+                                        borderRadius: '5px'
                                     }}
                                 >
                                     Abrir Correo para Adjuntar
                                 </a>
                                 <small className="form-text text-muted">
-                                    Se abrirá su cliente de correo. Por favor, adjunte el RIF.
+                                    Por favor, envíe el RIF a: <strong>abv.gemini.ia@gmail.com</strong>
                                 </small>
                             </div>
                         </div>
                     </div>
+                    
                     <div className="section-card">
                          <div className="section-header">
                              <div className="section-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
@@ -380,7 +375,9 @@ const FormABV2 = () => {
                          </div>
                          {isMobile ? renderParticipantCards() : renderParticipantsTable()}
                      </div>
+                     
                      {submissionStatus && (<div className={`submission-status ${submissionStatus.startsWith('Error') ? 'error' : 'success'}`}>{submissionStatus}</div>)}
+                     
                      <div className="submit-container">
                          <button type="submit" className="submit-button" disabled={isSubmitting}>{isSubmitting ? 'Validando y Enviando...' : 'Enviar Inscripción'}</button>
                      </div>
