@@ -75,7 +75,7 @@ function MenuFormularios() {
                 value="Fecha2"
                 checked={selectedDate === 'Fecha2'}
                 onChange={handleDateChange} // Usamos el nuevo manejador
-                 // Deshabilitado como en tu ejemplo original
+                disabled // Deshabilitado como en tu ejemplo original
               />
               <div className="option-content">
                 <span className="option-title">5 de 8:00 a.m. a 12:30 p.m. y 6 de noviembre de 2025</span>
