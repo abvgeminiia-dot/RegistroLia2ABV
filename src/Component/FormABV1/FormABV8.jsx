@@ -230,6 +230,16 @@ const FormABV8 = () => {
                     return;
                 }
             }
+            
+            // --- CÓDIGO AÑADIDO ---
+            // Valida que la cédula del participante tenga al menos 8 dígitos
+            if (p.CedulaParticipante.length < 8) {
+                alert(`La Cédula del participante #${participantNumber} debe tener al menos 8 dígitos. Si es necesario, complete con ceros a la izquierda.`);
+                setIsSubmitting(false);
+                return;
+            }
+            // --- FIN DEL CÓDIGO AÑADIDO ---
+
             if (p.IDValidadorParticipante.length !== 6) {
                 alert(`El ID Validador del participante #${participantNumber} debe tener 6 dígitos.`);
                 setIsSubmitting(false);
@@ -241,9 +251,9 @@ const FormABV8 = () => {
             
             if (/^[JG]$/.test(participantPrefix)) {
                  if (!rifJGRegex.test(participantRif)) {
-                    alert(`El RIF de la Organización (J o G) del participante #${participantNumber} no es válido. Debe tener una letra (J, G), un guion y **exactamente 9 dígitos (rellene con ceros a la izquierda si es necesario)**. Ej: J-001234567`);
-                    setIsSubmitting(false);
-                    return;
+                     alert(`El RIF de la Organización (J o G) del participante #${participantNumber} no es válido. Debe tener una letra (J, G), un guion y **exactamente 9 dígitos (rellene con ceros a la izquierda si es necesario)**. Ej: J-001234567`);
+                     setIsSubmitting(false);
+                     return;
                  }
             } else if (!rifJGCedulaRegex.test(participantRif)) {
                  alert(`El RIF/Cédula (V, E, P) de la Organización del participante #${participantNumber} no es válido. Debe tener una letra (V, E, P) y un formato numérico válido.`);
@@ -382,15 +392,15 @@ const FormABV8 = () => {
                                     {sectores.map(sector=>(<option key={`billing-${sector}`} value={sector}>{sector}</option>))}
                                 </select>
                             </div>
-                             
+                            
                             {/* --- ✅ Botón de adjuntar RIF (mailto) --- */}
                              <div className="form-group">
-                                <label htmlFor="adjuntarRIF">Adjuntar RIF (Imagen/PDF)<span style={{color:'red'}}>*</span></label>
-                                <button type="button" onClick={handleAttachRIF} className="submit-button" disabled={!isBillingDataReady} style={{backgroundColor: isBillingDataReady ? '#007bff' : '#ccc', marginTop: '5px'}}>
-                                    Adjuntar RIF (Abrir Correo)
-                                </button>
-                                <small id="adjuntarRIFHelp" className="form-text text-muted">Haga clic para abrir su aplicación de correo y adjuntar el RIF/Cédula a **abv.gemini.ia@gmail.com**.</small>
-                            </div>
+                                 <label htmlFor="adjuntarRIF">Adjuntar RIF (Imagen/PDF)<span style={{color:'red'}}>*</span></label>
+                                 <button type="button" onClick={handleAttachRIF} className="submit-button" disabled={!isBillingDataReady} style={{backgroundColor: isBillingDataReady ? '#007bff' : '#ccc', marginTop: '5px'}}>
+                                     Adjuntar RIF (Abrir Correo)
+                                 </button>
+                                 <small id="adjuntarRIFHelp" className="form-text text-muted">Haga clic para abrir su aplicación de correo y adjuntar el RIF/Cédula a **abv.gemini.ia@gmail.com**.</small>
+                             </div>
                         </div>
                     </div>
                     <div className="section-card">

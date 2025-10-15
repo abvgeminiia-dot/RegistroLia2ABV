@@ -228,6 +228,16 @@ const FormABV6 = () => {
                     return;
                 }
             }
+            
+            // --- CÓDIGO AÑADIDO ---
+            // Valida que la cédula del participante tenga al menos 8 dígitos
+            if (p.CedulaParticipante.length < 8) {
+                alert(`La Cédula del participante #${participantNumber} debe tener al menos 8 dígitos. Si es necesario, complete con ceros a la izquierda.`);
+                setIsSubmitting(false);
+                return;
+            }
+            // --- FIN DEL CÓDIGO AÑADIDO ---
+
             if (p.IDValidadorParticipante.length !== 6) {
                 alert(`El ID Validador del participante #${participantNumber} debe tener 6 dígitos.`);
                 setIsSubmitting(false);
@@ -378,15 +388,15 @@ const FormABV6 = () => {
                                     {sectores.map(sector=>(<option key={`billing-${sector}`} value={sector}>{sector}</option>))}
                                 </select>
                             </div>
-                             
+                            
                             {/* --- ✅ Botón de adjuntar RIF (mailto) --- */}
                              <div className="form-group">
-                                <label htmlFor="adjuntarRIF">Adjuntar RIF (Imagen/PDF)<span style={{color:'red'}}>*</span></label>
-                                <button type="button" onClick={handleAttachRIF} className="submit-button" disabled={!isBillingDataReady} style={{backgroundColor: isBillingDataReady ? '#007bff' : '#ccc', marginTop: '5px'}}>
-                                    Adjuntar RIF (Abrir Correo)
-                                </button>
-                                <small id="adjuntarRIFHelp" className="form-text text-muted">Haga clic para abrir su aplicación de correo y adjuntar el RIF/Cédula a **abv.gemini.ia@gmail.com**.</small>
-                            </div>
+                                 <label htmlFor="adjuntarRIF">Adjuntar RIF (Imagen/PDF)<span style={{color:'red'}}>*</span></label>
+                                 <button type="button" onClick={handleAttachRIF} className="submit-button" disabled={!isBillingDataReady} style={{backgroundColor: isBillingDataReady ? '#007bff' : '#ccc', marginTop: '5px'}}>
+                                     Adjuntar RIF (Abrir Correo)
+                                 </button>
+                                 <small id="adjuntarRIFHelp" className="form-text text-muted">Haga clic para abrir su aplicación de correo y adjuntar el RIF/Cédula a **abv.gemini.ia@gmail.com**.</small>
+                             </div>
                         </div>
                     </div>
                     <div className="section-card">
