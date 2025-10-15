@@ -54,7 +54,7 @@ function MenuFormularios() {
                 onChange={(e) => setSelectedDate(e.target.value)}
               />
               <div className="option-content">
-                <span className="option-title">Fecha 1</span>
+                <span className="option-title">3 de noviembre de 2025 - 8:00 a.m. a 12:00 p.m. y 4 de noviembre de 2025</span>
                 <span className="option-description">Primera fecha del evento</span>
               </div>
             </label>
@@ -69,7 +69,7 @@ function MenuFormularios() {
                 disabled
               />
               <div className="option-content">
-                <span className="option-title">Fecha 2</span>
+                <span className="option-title">5 de noviembre de 2025 - 8:00 a.m. a 12:00 p.m. y 6 de noviembre de 2025</span>
                 <span className="option-description">Próximamente - No disponible</span>
               </div>
             </label>
@@ -79,7 +79,7 @@ function MenuFormularios() {
         {/* Selección de Turno */}
         <div className="selection-card">
           <div className="card-header">
-            <h3>Selecciona el Turno</h3>
+            <h3>Selecciona horario para la práctica del segundo día</h3>
           </div>
           <div className="card-options">
             <label className="option-item">
@@ -91,7 +91,7 @@ function MenuFormularios() {
                 onChange={(e) => setSelectedShift(e.target.value)}
               />
               <div className="option-content">
-                <span className="option-title">Mañana</span>
+                <span className="option-title">4 de noviembre de 2025 8:00 a.m. a 12:00 p.m.</span>
                 <span className="option-description">Sesión matutina</span>
               </div>
             </label>
@@ -105,7 +105,7 @@ function MenuFormularios() {
                 onChange={(e) => setSelectedShift(e.target.value)}
               />
               <div className="option-content">
-                <span className="option-title">Tarde</span>
+                <span className="option-title">4 de noviembre de 2025 1:00 p.m. a 5:00 p.m.</span>
                 <span className="option-description">Sesión vespertina</span>
               </div>
             </label>
