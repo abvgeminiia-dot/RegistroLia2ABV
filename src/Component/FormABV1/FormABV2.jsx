@@ -84,7 +84,7 @@ const FormABV2 = () => {
     }, [numParticipants]);
 
     const formatIdentifier = (value) => {
-        const cleaned = value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        const cleaned = value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
         if (cleaned.length === 0) return '';
         
         const letter = cleaned.charAt(0);
@@ -198,8 +198,8 @@ const FormABV2 = () => {
                 }
             }
 
-            if (p.CedulaParticipante.length < 8) {
-                alert(`La Cédula del participante #${participantNumber} debe tener al menos 8 dígitos. Si es necesario, complete con ceros a la izquierda.`);
+            if (p.CedulaParticipante.length < 7) {
+                alert(`La Cédula del participante #${participantNumber} debe tener al menos 7 dígitos.`);
                 setIsSubmitting(false);
                 return;
             }
@@ -449,13 +449,9 @@ const FormABV2 = () => {
 
     const isBillingDataReady = billingData.RIFCedulaFacturacion && billingData.RIFCedulaFacturacion.length >= 2 && billingData.DenominacionFiscalFacturacion.trim() !== '';
 
-    // --- CÓDIGO CORREGIDO ---
-    // Generamos el enlace mailto aquí para que esté siempre disponible para la etiqueta <a>
-    const toEmail = 'abv.gemini.ia@gmail.com';
-    const rifToUse = billingData.RIFCedulaFacturacion || 'PENDIENTE';
-    const subject = `Adjunto RIF - Facturación ${rifToUse}`;
-    const body = `Estimados,\n\nAdjunto en este correo el RIF/Cédula correspondiente al número ${rifToUse} y a la Denominación Fiscal: ${billingData.DenominacionFiscalFacturacion || 'PENDIENTE'}.\n\nPor favor, adjunte el documento del RIF/Cédula a este correo y envíelo.\n\nSaludos.`;
-    const mailtoLink = `mailto:${toEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    // --- CÓDIGO CORREGIDO Y SIMPLIFICADO ---
+    // El enlace mailto ahora solo contiene el destinatario.
+    const mailtoLink = "mailto:abv.gemini.ia@gmail.com";
 
     return (
         <div className="container">
@@ -509,23 +505,23 @@ const FormABV2 = () => {
                             </div>
                             <div className="form-group">
                                 <label>Adjuntar RIF (Imagen/PDF)<span style={{color:'red'}}>*</span></label>
+                                {/* --- CÓDIGO CORREGIDO: Se usa un 'a' simple --- */}
                                 <a
-                                    href={isBillingDataReady ? mailtoLink : undefined}
-                                    className={`submit-button ${!isBillingDataReady ? 'disabled' : ''}`}
-                                    onClick={(e) => !isBillingDataReady && e.preventDefault()}
+                                    href={mailtoLink}
+                                    className="submit-button"
                                     style={{
                                         display: 'inline-block',
                                         textDecoration: 'none',
                                         color: 'white',
                                         textAlign: 'center',
-                                        pointerEvents: !isBillingDataReady ? 'none' : 'auto',
-                                        backgroundColor: isBillingDataReady ? '#007bff' : '#ccc',
                                         marginTop: '5px'
                                     }}
                                 >
                                     Adjuntar RIF (Abrir Correo)
                                 </a>
-                                <small className="form-text text-muted">Haga clic para abrir su correo y adjuntar el archivo.</small>
+                                <small className="form-text text-muted">
+                                    Haga clic para abrir su correo. Indique el RIF ({billingData.RIFCedulaFacturacion || 'PENDIENTE'}) en el asunto y adjunte el archivo.
+                                </small>
                             </div>
                         </div>
                     </div>
