@@ -305,7 +305,7 @@ const FormABV8 = () => {
                     <div className="logo-container"><img src={logoA} className="App-logo" alt="logo" /></div>
                     <h1>Asociación Bancaria de Venezuela</h1>
                     <h2>Formulario para Inscripción Agile Legal Project Management</h2>
-                    <h2>5 de noviembre de 2025 - 1:30 p.m. a 5:00 p.m. y 6 de noviembre de 2025 1:30 p.m. a 5:00 p.m. TURNO: TARDE</h2>
+                    <h2>5 de noviembre de 2025 - 8:00 p.m. a 12:30 p.m. y 6 de noviembre de 2025 1:30 p.m. a 5:00 p.m. TURNO: TARDE</h2>
                 </div>
                 <form onSubmit={handleSubmit} className="form-content">
                     <div className="section-card">
@@ -370,7 +370,7 @@ const FormABV8 = () => {
                                      Abrir Correo para Adjuntar
                                  </a>
                                  <small className="form-text text-muted">
-                                     Por favor, envíe el RIF a: <strong>abv.gemini.ia@gmail.com</strong>
+                                     Por favor, en caso de que tenga habilitado protecciones en el navegador envíe el RIF a: <strong>abv.thap@asobanca.com.ve</strong>
                                  </small>
                              </div>
                         </div>
