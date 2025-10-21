@@ -68,20 +68,6 @@ function MenuFormularios() {
               </div>
             </label>
 
-            <label className="option-item disabled">
-              <input
-                type="radio"
-                name="date"
-                value="Fecha2"
-                checked={selectedDate === 'Fecha2'}
-                onChange={handleDateChange} // Usamos el nuevo manejador
-                disabled // Deshabilitado como en tu ejemplo original
-              />
-              <div className="option-content">
-                <span className="option-title">4 de 8:00 a.m. a 12:30 p.m. y 6 de noviembre de 2025</span>
-                <span className="option-description">Próximamente - No disponible</span>
-              </div>
-            </label>
           </div>
         </div>
 
@@ -106,20 +92,6 @@ function MenuFormularios() {
                 </div>
               </label>
 
-              <label className="option-item">
-                <input
-                  type="radio"
-                  name="shift"
-                  value="Tarde"
-                  checked={selectedShift === 'Tarde'}
-                  onChange={(e) => setSelectedShift(e.target.value)}
-                  disabled
-                />
-                <div className="option-content">
-                  <span className="option-title">Turno tarde 1:00 p.m. a 5:00 p.m.</span>
-                  <span className="option-description">Sesión vespertina</span>
-                </div>
-              </label>
             </div>
           </div>
         )}
