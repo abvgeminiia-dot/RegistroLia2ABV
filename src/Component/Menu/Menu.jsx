@@ -63,7 +63,7 @@ function MenuFormularios() {
                 onChange={handleDateChange} // Usamos el nuevo manejador
               />
               <div className="option-content">
-                <span className="option-title">4 de 8:00 a.m. a 12:30 p.m. y 5 de noviembre de 2025</span>
+                <span className="option-title">4 de 8:00 a.m. a 12:00 p.m. y 5 de noviembre de 2025</span>
                 <span className="option-description">Primera fecha del evento</span>
               </div>
             </label>
