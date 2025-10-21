@@ -92,6 +92,20 @@ function MenuFormularios() {
                 </div>
               </label>
 
+              <label className="option-item">
+                <input
+                  type="radio"
+                  name="shift"
+                  value="Tarde"
+                  checked={selectedShift === 'Tarde'}
+                  onChange={(e) => setSelectedShift(e.target.value)}
+                  
+                />
+                <div className="option-content">
+                  <span className="option-title">Turno tarde 1:00 p.m. a 5:00 p.m.</span>
+                  <span className="option-description">Sesión vespertina</span>
+                </div>
+              </label>
             </div>
           </div>
         )}
